@@ -1,0 +1,39 @@
+{
+  "name": "nextjs-readsonic",
+  "version": "1.0.0",
+  "description": "ReadSonic Next.js Component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kovrichard/nextjs-readsonic.git"
+  },
+  "keywords": [
+    "react",
+    "next.js",
+    "audioblog",
+    "component",
+    "voice"
+  ],
+  "author": "Richard Kovacs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kovrichard/nextjs-readsonic/issues"
+  },
+  "homepage": "https://github.com/kovrichard/nextjs-readsonic#readme",
+  "dependencies": {
+    "@tabler/icons-react": "2.42.0"
+  },
+  "devDependencies": {
+    "next": "14.0.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@types/node": "20.9.4",
+    "@types/react": "18.2.38",
+    "@types/react-dom": "18.2.17",
+    "typescript": "5.3.2"
+  }
+}
