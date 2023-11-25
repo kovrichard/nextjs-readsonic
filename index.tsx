@@ -48,7 +48,6 @@ export default function ReadSonic({ className }: Props) {
         const payload = {
             "origin": window.location.origin,
             "slug": window.location.pathname,
-            "voice": String(process.env.NEXT_PUBLIC_READSONIC_VOICE),
         };
         fetch('https://api.readsonic.io/synthesize', {
             method: "POST",
