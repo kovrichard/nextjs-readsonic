@@ -1,104 +1,106 @@
 "use client";
 
+import { useState, useEffect, useRef } from 'react';
 import { IconLoader2, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
-import { useRef, useState } from 'react';
 
 interface Props {
     className?: string;
 }
 
 export default function ReadSonic({ className }: Props) {
-    const audio = useRef<HTMLAudioElement>(null);
-    const [paused, setPaused] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const [audioSrc, setAudioSrc] = useState<string | null>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    function sourceLoaded() {
-        return Boolean(document.getElementById('audio-source'));
-    }
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
 
-    function togglePlay() {
-        if (audio.current?.paused) {
-            audio.current?.play();
-            setPaused(false);
+        const handlePause = () => setIsPlaying(false);
+        const handlePlay = () => setIsPlaying(true);
+
+        audio.addEventListener('pause', handlePause);
+        audio.addEventListener('play', handlePlay);
+
+        return () => {
+            audio.removeEventListener('pause', handlePause);
+            audio.removeEventListener('play', handlePlay);
+        };
+    }, [audioSrc]);
+
+    const togglePlay = () => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        if (audio.paused) {
+            audio.play();
         } else {
-            audio.current?.pause();
-            setPaused(true);
+            audio.pause();
         }
-    }
+    };
 
-    audio.current?.addEventListener('pause', () => {
-        setPaused(true);
-    });
-
-    audio.current?.addEventListener('play', () => {
-        setPaused(false);
-    });
-
-    async function tts() {
-        if (sourceLoaded()) {
+    const tts = async () => {
+        if (audioSrc) {
             togglePlay();
             return;
         }
 
-        if (loading) {
-            return;
-        }
+        if (isLoading) return;
 
-        setLoading(true);
+        setIsLoading(true);
         const payload = {
             "origin": window.location.origin,
             "slug": window.location.pathname,
         };
-        fetch('https://api.readsonic.io/synthesize', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
+
+        try {
+            const response = await fetch('https://api.readsonic.io/synthesize', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload)
+            });
+
             if (!response.ok) {
-                throw new Error(response.statusText)
+                throw new Error(response.statusText);
             }
-            
-            return response.json();
-        })
-        .then((data) => {
-            let source = document.createElement('source');
-            source.id = 'audio-source';
-            source.type = 'audio/mpeg';
-            source.src = data.content;
-            audio.current?.appendChild(source);
-            
-            audio.current?.classList.add('w-[35rem]');
-            audio.current?.classList.remove('hidden');
-            audio.current?.classList.add('block');
-            audio.current?.play();
-            setPaused(false);
-            setLoading(false);
-        }).catch((error) => {
+
+            const data = await response.json();
+            setAudioSrc(data.content);
+            setIsPlaying(true);
+        } catch (error) {
             console.error(error);
-            setLoading(false);
-        });
-    }
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <>
-        <button className={className} onClick={tts}>
-            {loading ? ( 
-                <IconLoader2 className="animate-spin" /> ) : (
-                sourceLoaded() ? (
-                    paused ? <IconPlayerPlay /> : <IconPlayerPause />
+            <button className={className} onClick={tts}>
+                {isLoading ? (
+                    <IconLoader2 className="animate-spin" />
+                ) : isPlaying ? (
+                    <IconPlayerPause />
                 ) : (
                     <IconPlayerPlay />
-                )
-            )}
-        </button>
-        <div className='fixed bottom-4 left-0 w-full flex justify-center items-center'>
-            <audio id="audio" ref={audio} controls className="hidden">
-                Your browser does not support the <code>audio</code> element.
-            </audio>
-        </div>
+                )}
+            </button>
+            <div className='fixed bottom-4 left-0 w-full flex justify-center items-center'>
+                {audioSrc && (
+                    <audio 
+                        id="audio" 
+                        ref={audioRef} 
+                        controls 
+                        src={audioSrc}
+                        autoPlay
+                    >
+                        Your browser does not support the <code>audio</code> element.
+                    </audio>
+                )}
+            </div>
         </>
-    )
+    );
 }
