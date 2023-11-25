@@ -79,7 +79,7 @@ export default function ReadSonic({ className }: Props) {
 
     return (
         <>
-            <button className={className} onClick={synthesizePost}>
+            <button className={className} onClick={synthesizePost} aria-label="Play audio">
                 {isLoading ? (
                     <IconLoader2 className="animate-spin" />
                 ) : isPlaying ? (
