@@ -40,7 +40,7 @@ export default function ReadSonic({ className }: Props) {
         }
     };
 
-    const tts = async () => {
+    const synthesizePost = async () => {
         if (audioSrc) {
             togglePlay();
             return;
@@ -79,7 +79,7 @@ export default function ReadSonic({ className }: Props) {
 
     return (
         <>
-            <button className={className} onClick={tts}>
+            <button className={className} onClick={synthesizePost}>
                 {isLoading ? (
                     <IconLoader2 className="animate-spin" />
                 ) : isPlaying ? (
