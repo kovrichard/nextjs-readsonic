@@ -3,4 +3,4 @@ index.js
 index.d.ts
 *.tgz
 assets/*.js
-assets/*.ts
+assets/*.d.ts
