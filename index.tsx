@@ -1,13 +1,26 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Loader, Pause, Play } from "./assets";
+import Headphones from "./assets/headphones";
+import Loader from "./assets/loader";
+import Play from "./assets/play";
+import Pause from "./assets/pause";
 
 interface Props {
+  badge?: boolean;
+  text?: string;
+  color?: string;
+  icon?: "play" | "headphones";
   className?: string;
 }
 
-export default function ReadSonic({ className }: Props) {
+export default function ReadSonic({
+  badge,
+  text,
+  color,
+  icon,
+  className,
+}: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -55,13 +68,16 @@ export default function ReadSonic({ className }: Props) {
     };
 
     try {
-      const response = await fetch("https://api.readsonic.io/synthesize/nextjs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        "https://api.readsonic.io/synthesize/nextjs",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -88,8 +104,10 @@ export default function ReadSonic({ className }: Props) {
           <Loader sx={{ animation: "spin 1s linear infinite" }} />
         ) : isPlaying ? (
           <Pause />
-        ) : (
+        ) : icon === "play" ? (
           <Play />
+        ) : (
+          <Headphones />
         )}
       </button>
       <div
