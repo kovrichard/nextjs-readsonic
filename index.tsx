@@ -55,7 +55,7 @@ export default function ReadSonic({ className }: Props) {
     };
 
     try {
-      const response = await fetch("https://api.readsonic.io/synthesize", {
+      const response = await fetch("https://api.readsonic.io/synthesize/nextjs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +104,14 @@ export default function ReadSonic({ className }: Props) {
         }}
       >
         {audioSrc && (
-          <audio id="audio" ref={audioRef} controls src={audioSrc} autoPlay>
+          <audio
+            id="audio"
+            ref={audioRef}
+            controls
+            src={audioSrc}
+            autoPlay
+            style={{ width: "30rem" }}
+          >
             Your browser does not support the <code>audio</code> element.
           </audio>
         )}
