@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { IconLoader2, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
+import Image from 'next/image';
+import { Loader, Pause, Play } from './assets';
 
 interface Props {
     className?: string;
@@ -81,11 +82,11 @@ export default function ReadSonic({ className }: Props) {
         <>
             <button className={className} onClick={synthesizePost} aria-label="Play audio">
                 {isLoading ? (
-                    <IconLoader2 className="animate-spin" />
+                    <Loader sx={{ animation: 'spin 1s linear infinite' }}/>
                 ) : isPlaying ? (
-                    <IconPlayerPause />
+                    <Pause />
                 ) : (
-                    <IconPlayerPlay />
+                    <Play />
                 )}
             </button>
             <div className='fixed bottom-4 left-0 w-full flex justify-center items-center'>

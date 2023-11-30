@@ -4,3 +4,5 @@ node_modules
 index.tsx
 *.tgz
 tsconfig.json
+.github
+assets/*.tsx
