@@ -7,19 +7,19 @@ Official Next.js component for [ReadSonic](https://readsonic.io).
 ### NPM
 
 ```bash
-npm install nextjs-readsonic
+npm install @readsonic/nextjs
 ```
 
 ### Yarn
 
 ```bash
-yarn add nextjs-readsonic
+yarn add @readsonic/nextjs
 ```
 
 ### PNPM
 
 ```bash
-pnpm add nextjs-readsonic
+pnpm add @readsonic/nextjs
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ Add the `<ReadSonic />` component to your page. The component should be placed i
 For example, if you have a `app/blog/[slug].tsx` page that renders all of your blog posts, you should add the `<ReadSonic />` component to that page, or to a component that is rendered by that page.
 
 ```tsx
-import ReadSonic from 'nextjs-readsonic';
+import ReadSonic from '@readsonic/nextjs';
 
 export default function Post() {
   return (

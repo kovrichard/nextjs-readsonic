@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-readsonic",
+  "name": "@readsonic/nextjs",
   "version": "1.1.1",
   "description": "ReadSonic Next.js Component",
   "main": "index.js",
@@ -25,12 +25,12 @@
   },
   "homepage": "https://github.com/kovrichard/nextjs-readsonic#readme",
   "dependencies": {
-    "@tabler/icons-react": "2.42.0"
-  },
-  "devDependencies": {
     "next": "14.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "@tabler/icons-react": "2.42.0"
+  },
+  "devDependencies": {
     "@types/node": "20.9.4",
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.17",
