@@ -15,10 +15,10 @@ interface Props {
 }
 
 export default function ReadSonic({
-  badge,
-  text,
-  color,
-  icon,
+  badge = true,
+  text = "Listen",
+  color = "#cccccc",
+  icon = "play",
   className,
 }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -95,21 +95,54 @@ export default function ReadSonic({
 
   return (
     <>
-      <button
-        className={className}
-        onClick={synthesizePost}
-        aria-label="Play audio"
-      >
-        {isLoading ? (
-          <Loader sx={{ animation: "spin 1s linear infinite" }} />
-        ) : isPlaying ? (
-          <Pause />
-        ) : icon === "play" ? (
-          <Play />
-        ) : (
-          <Headphones />
-        )}
-      </button>
+      {badge ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: color,
+            paddingTop: "0.5rem",
+            paddingBottom: "0.5rem",
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            borderRadius: "50%",
+            gap: "0.5rem",
+          }}
+        >
+          {text && <span>{text}</span>}
+          <button
+            className={className}
+            onClick={synthesizePost}
+            aria-label="Play audio"
+          >
+            {isLoading ? (
+              <Loader sx={{ animation: "spin 1s linear infinite" }} />
+            ) : isPlaying ? (
+              <Pause />
+            ) : icon === "play" ? (
+              <Play />
+            ) : (
+              <Headphones />
+            )}
+          </button>
+        </div>
+      ) : (
+        <button
+          className={className}
+          onClick={synthesizePost}
+          aria-label="Play audio"
+        >
+          {isLoading ? (
+            <Loader sx={{ animation: "spin 1s linear infinite" }} />
+          ) : isPlaying ? (
+            <Pause />
+          ) : icon === "play" ? (
+            <Play />
+          ) : (
+            <Headphones />
+          )}
+        </button>
+      )}
       <div
         style={{
           position: "fixed",
