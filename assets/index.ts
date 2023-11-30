@@ -1,9 +1,5 @@
-import Loader from './loader';
-import Pause from './pause';
-import Play from './play';
+import Loader from "./loader";
+import Pause from "./pause";
+import Play from "./play";
 
-export {
-    Loader,
-    Pause,
-    Play,
-};
+export { Loader, Pause, Play };

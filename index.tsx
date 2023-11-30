@@ -1,107 +1,114 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { Loader, Pause, Play } from './assets';
+import { useState, useEffect, useRef } from "react";
+import { Loader, Pause, Play } from "./assets";
 
 interface Props {
-    className?: string;
+  className?: string;
 }
 
 export default function ReadSonic({ className }: Props) {
-    const audioRef = useRef<HTMLAudioElement>(null);
-    const [audioSrc, setAudioSrc] = useState<string | null>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [audioSrc, setAudioSrc] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        const audio = audioRef.current;
-        if (!audio) return;
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
 
-        const handlePause = () => setIsPlaying(false);
-        const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => setIsPlaying(true);
 
-        audio.addEventListener('pause', handlePause);
-        audio.addEventListener('play', handlePlay);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("play", handlePlay);
 
-        return () => {
-            audio.removeEventListener('pause', handlePause);
-            audio.removeEventListener('play', handlePlay);
-        };
-    }, [audioSrc]);
+    return () => {
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("play", handlePlay);
+    };
+  }, [audioSrc]);
 
-    const togglePlay = () => {
-        const audio = audioRef.current;
-        if (!audio) return;
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
 
-        if (audio.paused) {
-            audio.play();
-        } else {
-            audio.pause();
-        }
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  };
+
+  const synthesizePost = async () => {
+    if (audioSrc) {
+      togglePlay();
+      return;
+    }
+
+    if (isLoading) return;
+
+    setIsLoading(true);
+    const payload = {
+      origin: window.location.origin,
+      slug: window.location.pathname,
     };
 
-    const synthesizePost = async () => {
-        if (audioSrc) {
-            togglePlay();
-            return;
-        }
+    try {
+      const response = await fetch("https://api.readsonic.io/synthesize", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-        if (isLoading) return;
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
 
-        setIsLoading(true);
-        const payload = {
-            "origin": window.location.origin,
-            "slug": window.location.pathname,
-        };
+      const data = await response.json();
+      setAudioSrc(data.content);
+      setIsPlaying(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        try {
-            const response = await fetch('https://api.readsonic.io/synthesize', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-
-            const data = await response.json();
-            setAudioSrc(data.content);
-            setIsPlaying(true);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return (
-        <>
-            <button className={className} onClick={synthesizePost} aria-label="Play audio">
-                {isLoading ? (
-                    <Loader sx={{ animation: 'spin 1s linear infinite' }}/>
-                ) : isPlaying ? (
-                    <Pause />
-                ) : (
-                    <Play />
-                )}
-            </button>
-            <div className='fixed bottom-4 left-0 w-full flex justify-center items-center'>
-                {audioSrc && (
-                    <audio 
-                        id="audio" 
-                        ref={audioRef} 
-                        controls 
-                        src={audioSrc}
-                        autoPlay
-                    >
-                        Your browser does not support the <code>audio</code> element.
-                    </audio>
-                )}
-            </div>
-        </>
-    );
+  return (
+    <>
+      <button
+        className={className}
+        onClick={synthesizePost}
+        aria-label="Play audio"
+      >
+        {isLoading ? (
+          <Loader sx={{ animation: "spin 1s linear infinite" }} />
+        ) : isPlaying ? (
+          <Pause />
+        ) : (
+          <Play />
+        )}
+      </button>
+      <div
+        style={{
+          position: "fixed",
+          bottom: "1rem",
+          left: 0,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {audioSrc && (
+          <audio id="audio" ref={audioRef} controls src={audioSrc} autoPlay>
+            Your browser does not support the <code>audio</code> element.
+          </audio>
+        )}
+      </div>
+    </>
+  );
 }
