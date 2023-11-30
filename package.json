@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kovrichard/nextjs-readsonic.git"
+    "url": "git+https://github.com/kovrichard/readsonic-nextjs.git"
   },
   "keywords": [
     "react",
@@ -19,11 +19,11 @@
     "voice"
   ],
   "author": "Richard Kovacs",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kovrichard/nextjs-readsonic/issues"
+    "url": "https://github.com/kovrichard/readsonic-nextjs/issues"
   },
-  "homepage": "https://github.com/kovrichard/nextjs-readsonic#readme",
+  "homepage": "https://github.com/kovrichard/readsonic-nextjs#readme",
   "dependencies": {
     "next": "14.0.3",
     "react": "18.2.0",
@@ -35,5 +35,6 @@
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.17",
     "typescript": "5.3.2"
-  }
+  },
+  "types": "./index.d.ts"
 }
