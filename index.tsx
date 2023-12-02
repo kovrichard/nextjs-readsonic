@@ -105,7 +105,7 @@ export default function ReadSonic({
             paddingBottom: "0.5rem",
             paddingLeft: "1rem",
             paddingRight: "1rem",
-            borderRadius: "50%",
+            borderRadius: "9999rem",
             gap: "0.5rem",
           }}
         >
