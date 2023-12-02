@@ -11,7 +11,9 @@ interface Props {
   text?: string;
   color?: string;
   icon?: "play" | "headphones";
-  className?: string;
+  badgeClasses?: string;
+  textClasses?: string;
+  iconClasses?: string;
 }
 
 export default function ReadSonic({
@@ -19,7 +21,9 @@ export default function ReadSonic({
   text = "Listen",
   color = "#cccccc",
   icon = "play",
-  className,
+  badgeClasses,
+  textClasses,
+  iconClasses,
 }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
@@ -108,10 +112,11 @@ export default function ReadSonic({
             borderRadius: "9999rem",
             gap: "0.5rem",
           }}
+          className={badgeClasses}
         >
-          {text && <span>{text}</span>}
+          {text && <span className={textClasses}>{text}</span>}
           <button
-            className={className}
+            className={iconClasses}
             onClick={synthesizePost}
             aria-label="Play audio"
           >
@@ -128,7 +133,7 @@ export default function ReadSonic({
         </div>
       ) : (
         <button
-          className={className}
+          className={iconClasses}
           onClick={synthesizePost}
           aria-label="Play audio"
         >
