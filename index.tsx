@@ -14,6 +14,7 @@ interface Props {
   badgeClasses?: string;
   textClasses?: string;
   iconClasses?: string;
+  url?: string;
 }
 
 export default function ReadSonic({
@@ -24,6 +25,7 @@ export default function ReadSonic({
   badgeClasses,
   textClasses,
   iconClasses,
+  url = "https://api.readsonic.io/synthesize/nextjs",
 }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
@@ -72,16 +74,13 @@ export default function ReadSonic({
     };
 
     try {
-      const response = await fetch(
-        "https://api.readsonic.io/synthesize/nextjs",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
         throw new Error(response.statusText);
